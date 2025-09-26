@@ -45,6 +45,8 @@ This project demonstrates how to build a **Graph-based Retrieval-Augmented Gener
 - All answers reference supporting facts as **F#**, ensuring explainable outputs.
 
 Outputs :
+
+
 <img width="1441" height="610" alt="image" src="https://github.com/user-attachments/assets/5bd3341d-9f12-4db5-9d8b-b22054b5215d" />
 <img width="1475" height="716" alt="image" src="https://github.com/user-attachments/assets/826185a1-6af6-453a-a822-5311fe69ad69" />
 
