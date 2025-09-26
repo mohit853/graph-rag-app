@@ -1,4 +1,0 @@
-python-dotenv
-requests
-neo4j
-rapidfuzz
