@@ -28,20 +28,15 @@ def tmdb_get(path: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
 
 def ollama_generate(prompt: str, temperature: float = 0.1) -> str:
     url = f"{OLLAMA_HOST}/api/generate"
-    payload = {"model": OLLAMA_MODEL, "prompt": prompt, "options": {"temperature": temperature}}
+    payload = {
+        "model": OLLAMA_MODEL,
+        "prompt": prompt,
+        "options": {"temperature": temperature},
+        "stream": False  # <— important
+    }
     r = requests.post(url, json=payload, timeout=120)
     r.raise_for_status()
-    # The streaming API returns chunks; simple join for POC:
-    text = ""
-    for line in r.iter_lines(decode_unicode=True):
-        if not line: continue
-        try:
-            obj = eval(line) if line.startswith("{") else {}
-        except Exception:
-            obj = {}
-        if isinstance(obj, dict) and "response" in obj:
-            text += obj["response"]
-    # Fallback for non-stream servers:
-    if not text and r.headers.get("content-type","").startswith("application/json"):
-        text = r.json().get("response","")
-    return text.strip()
+    data = r.json()
+    if "error" in data and data["error"]:
+        raise RuntimeError(f"Ollama error: {data['error']}")
+    return (data.get("response") or "").strip()
